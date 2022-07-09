@@ -42,10 +42,10 @@ First, you have to clone the project
 Once the clone is finished, you have to download front-end and back-end packages.
 
 ```bash
-    cd freelance-board/frontend-freelance-board
-    yarn
-    cd ../backend-freelance-board
-    composer install
+  cd freelance-board/frontend-freelance-board
+  yarn
+  cd ../backend-freelance-board
+  composer install
 ```
     
 ## Usage
@@ -55,12 +55,12 @@ Before try to launch any server, be sure you have copy the .env.example to a .en
 
 The project use [Laravel Sail](https://laravel.com/docs/9.x/sail). You can run the Docker container using the following command inside the backend folder :
 ```bash
-./vendor/bin/sail up
+  ./vendor/bin/sail up
 ```
 
 Then, you have to go the the frontend folder and start the frontend server
 ```bash
-yarn dev
+  yarn dev
 ```
 
 
