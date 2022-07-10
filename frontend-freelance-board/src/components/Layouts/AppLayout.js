@@ -4,6 +4,7 @@ import { useState } from 'react'
 import useDarkMode from '@/hooks/useDarkMode'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import toast, { Toaster } from 'react-hot-toast';
 
 const AppLayout = ({ title = 'Espace membre', children }) => {
     const { logout, user } = useAuth({ middleware: 'auth' })
@@ -209,6 +210,9 @@ const AppLayout = ({ title = 'Espace membre', children }) => {
                     </main>
                 </div>
             </div>
+            <Toaster
+                position='bottom-right'
+            />
         </>
     )
 }

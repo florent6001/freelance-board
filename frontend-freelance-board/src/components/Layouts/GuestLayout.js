@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import ApplicationLogo from '../ApplicationLogo';
 import Dropdown from '../Dropdown';
 import { DropdownButton } from '../DropdownLink';
+import toast, { Toaster } from 'react-hot-toast';
 
 const GuestLayout = ({ title = "Gérez votre entreprise facilement", children }) => {
 
@@ -199,6 +200,9 @@ const GuestLayout = ({ title = "Gérez votre entreprise facilement", children })
             <div className="font-sans text-gray-900 antialiased">
                 {children}
             </div>
+            <Toaster
+                position='bottom-right'
+            />
         </>
     )
 }

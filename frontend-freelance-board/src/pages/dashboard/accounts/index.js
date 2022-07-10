@@ -5,11 +5,34 @@ import AppLayout from "@/components/Layouts/AppLayout";
 import ConfirmationBox from "@/components/ConfirmationBox";
 import { P, H1, H2 } from "@/utilities/typography";
 import { useState } from "react";
-import defaultUser from "../../../../public/images/default_user.jpg"
+import { useAuth } from "@/hooks/auth";
+import axios from "@/lib/axios";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const Accounts = () => {
 
+    const router = useRouter()
     const [modalIsOpen, setModalIsOpen] = useState(false)
+    const { user, logout } = useAuth()
+
+    const deleteAccount = () => {
+        axios
+            .delete('/api/user/delete')
+            .then(res => {
+                if (res.data == 1) {
+                    toast.success('Votre compte a bien été supprimé. Déconnexion en cours...', {
+                        duration: 5000
+                    })
+                    setTimeout(() => {
+                        router.push('/')
+                    }, 5000)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
     return (
         <>
@@ -21,18 +44,12 @@ const Accounts = () => {
                         <div className="w-full">
                             <div className="w-full md:flex">
                                 <div className="w-full md:mx-5 my-3 md:my-0">
-                                    <Label htmlFor="last_name">Nom</Label>
-                                    <Input className="w-full" id="last_name" />
+                                    <Label htmlFor="last_name">Nom complet</Label>
+                                    <Input className="w-full" id="last_name" value={user?.name} />
                                 </div>
                                 <div className="w-full md:mx-5 my-3 md:my-0">
-                                    <Label htmlFor="first_name">Prénom</Label>
-                                    <Input className="w-full" id="first_name" />
-                                </div>
-                            </div>
-                            <div className="w-full">
-                                <div className="md:mx-5 my-3 md:mt-5">
                                     <Label htmlFor="email">Adresse email</Label>
-                                    <Input className="w-full" type="email" id="email" />
+                                    <Input className="w-full" type="email" id="email" value={user?.email} />
                                 </div>
                             </div>
                             <div className="w-full md:flex md:mt-5">
@@ -41,7 +58,7 @@ const Accounts = () => {
                                     <Input className="w-full" id="password" type="password" />
                                 </div>
                                 <div className="w-full md:mx-5 my-3 md:my-0">
-                                    <Label htmlFor="password_confirm">Confirmation du mot d epasse</Label>
+                                    <Label htmlFor="password_confirm">Confirmation du mot de passe</Label>
                                     <Input className="w-full" id="password_confirm" type="password" />
                                 </div>
                             </div>
@@ -57,17 +74,15 @@ const Accounts = () => {
                 </div>
             </AppLayout>
             {modalIsOpen &&
-                <form>
-                    <ConfirmationBox title="Êtes-vous sûr de vouloir supprimer votre compte ?">
-                        <P className="mt-5">
-                            <strong className="uppercase">Attention :</strong> Si vous supprimez votre compte, toutes les informations liées à votre compte (factures, devis ainsi que clients) seront supprimés et irrécupérable.
-                        </P>
-                        <div className="float-right pt-5">
-                            <Button className="mr-2" onClick={() => setModalIsOpen(false)}>Annuler</Button>
-                            <button type="submit" className="inline-flex items-center px-4 py-2 bg-red-800 dark:bg-red-500 border border-transparent rounded-md font-bold text-sm text-white uppercase tracking-widest  hover:bg-gray-700 active:bg-red-800 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 mt-5">Valider</button>
-                        </div>
-                    </ConfirmationBox>
-                </form>
+                <ConfirmationBox title="Êtes-vous sûr de vouloir supprimer votre compte ?">
+                    <P className="mt-5">
+                        <strong className="uppercase">Attention :</strong> Si vous supprimez votre compte, toutes les informations liées à votre compte (factures, devis ainsi que clients) seront supprimés et irrécupérable.
+                    </P>
+                    <div className="float-right pt-5">
+                        <Button className="mr-2" onClick={() => setModalIsOpen(false)}>Annuler</Button>
+                        <button className="inline-flex items-center px-4 py-2 bg-red-800 dark:bg-red-500 border border-transparent rounded-md font-bold text-sm text-white uppercase tracking-widest  hover:bg-gray-700 active:bg-red-800 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 mt-5" onClick={deleteAccount}>Valider</button>
+                    </div>
+                </ConfirmationBox>
             }
         </>
     )
