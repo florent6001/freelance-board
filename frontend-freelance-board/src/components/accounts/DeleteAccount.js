@@ -1,16 +1,21 @@
-import { useState } from "react"
-import { H2, P } from "@/utilities/typography"
-import ConfirmationBox from "../ConfirmationBox"
+import axios from "@/lib/axios"
 import Button from "../Button"
+import { useState } from "react"
 import toast from "react-hot-toast"
+import ConfirmationBox from "../ConfirmationBox"
+import { H2, P } from "@/utilities/typography"
+import { useAuth } from "@/hooks/auth"
+import { useRouter } from "next/router"
 
 const DeleteAccount = () => {
 
+    const { user } = useAuth()
+    const router = useRouter()
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
     const deleteAccount = () => {
         axios
-            .delete('/api/user/delete')
+            .delete(`/api/user/${user?.id}`)
             .then(res => {
                 if (res.data == 1) {
                     toast.success('Votre compte a bien été supprimé. Déconnexion en cours...', {

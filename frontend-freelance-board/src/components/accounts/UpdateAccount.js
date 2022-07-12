@@ -29,7 +29,7 @@ const UpdateAccount = () => {
     const updateAccount = (e) => {
         e.preventDefault();
         setUpdateErrors([]);
-        axios.post('/api/user/update',
+        axios.put(`/api/user/${user?.id}`,
             {
                 name, email, password, password_confirmation: passwordConfirm
             }

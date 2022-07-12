@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Validation\Rules;
 
-class UpdateAccountController extends Controller
+class UserController extends Controller
 {
-    public function update(Request $request)
+    public function update(User $user, Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|max:100|min:5',
@@ -31,5 +31,12 @@ class UpdateAccountController extends Controller
         $user->email = $validated['email'];
 
         return $user->save();
+    }
+
+    public function destroy(User $user, Request $request)
+    {
+        $user = User::where('id', $request->user()->id)->first();
+        $user->tokens()->delete();
+        return $user->delete();
     }
 }
