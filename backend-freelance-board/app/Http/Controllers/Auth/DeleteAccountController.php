@@ -10,7 +10,7 @@ class DeleteAccountController extends Controller
 {
     public function destroy(Request $request)
     {
-        $user = User::where('id', $request->user()->id);
+        $user = User::where('id', $request->user()->id)->first();
         return $user->delete();
     }
 }
